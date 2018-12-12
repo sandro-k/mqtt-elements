@@ -28,9 +28,13 @@ element. And manually connect if `auto` is set to `false` with `connect`
 
 <dom-module id="mqtt-connection">
   <template>
-    <content id="mqttSubscriptions" select="mqtt-subscription"></content>
-    <content id="mqttPublications" select="mqtt-publish"></content>
-    <content id="content"></content>
+    <!--<content id="mqttSubscriptions" select="mqtt-subscription"></content>-->
+    <!--<content id="mqttPublications" select="mqtt-publish"></content>-->
+    <!--<content id="content"></content>-->
+
+    <slot id="mqttSubscriptions" name="mqtt-subscription"></slot>
+    <slot id="mqttPublications" name="mqtt-publish"></slot>
+    <slot id="content"></slot>
   </template>
 </dom-module>
 
@@ -560,42 +564,42 @@ element. And manually connect if `auto` is set to `false` with `connect`
         // get the index of the element
         var index = this[arrName].indexOf(element);
         // if the element exists within the array
-        if(index >= 0) {
-          // get the polymer collection key see:
-          // https://github.com/Polymer/polymer/issues/2068
-          var polymerPathId = Polymer.Collection.get(this.get(arrName)).getKey(this[arrName][index]);
-
-          // check if the id is valid
-          if(polymerPathId >= 0) {
-
-            // get all defined properties of the custom element
-            var propertyNames = Object.getOwnPropertyNames(this[arrName][index].properties);
-
-            // iterate over all properties
-            for (var i = 0; i < propertyNames.length; i++) {
-              // build the path
-              var path = [arrName, polymerPathId, propertyNames[i]].join(".");
-
-              // check if the element is an array, then slice needs to get called to actually result in
-              // Polymer_propertySetter
-              // old !== value => true
-              if(Array.isArray(this[arrName][index][propertyNames[i]])) {
-                this.notifyPath(path, this[arrName][index][propertyNames[i]].slice());
-              }
-              // TOOD
-              // if the prop is an object each property has to be checked recursively
-              // for now use
-              // this.set($path, {$prop1: $prop1Old, $prop2: prop2Changed};
-              // to notify the path about changes
-              // else if(typeof this[arrName][index][propertyNames[i]] === "object") {
-              //
-              // }
-              else {
-                this.notifyPath(path, this[arrName][index][propertyNames[i]]);
-              }
-            }
-          }
-        }
+        // if(index >= 0) {
+        //   // get the polymer collection key see:
+        //   // https://github.com/Polymer/polymer/issues/2068
+        //   var polymerPathId = Polymer.Collection.get(this.get(arrName)).getKey(this[arrName][index]);
+        //
+        //   // check if the id is valid
+        //   if(polymerPathId >= 0) {
+        //
+        //     // get all defined properties of the custom element
+        //     var propertyNames = Object.getOwnPropertyNames(this[arrName][index].properties);
+        //
+        //     // iterate over all properties
+        //     for (var i = 0; i < propertyNames.length; i++) {
+        //       // build the path
+        //       var path = [arrName, polymerPathId, propertyNames[i]].join(".");
+        //
+        //       // check if the element is an array, then slice needs to get called to actually result in
+        //       // Polymer_propertySetter
+        //       // old !== value => true
+        //       if(Array.isArray(this[arrName][index][propertyNames[i]])) {
+        //         this.notifyPath(path, this[arrName][index][propertyNames[i]].slice());
+        //       }
+        //       // TOOD
+        //       // if the prop is an object each property has to be checked recursively
+        //       // for now use
+        //       // this.set($path, {$prop1: $prop1Old, $prop2: prop2Changed};
+        //       // to notify the path about changes
+        //       // else if(typeof this[arrName][index][propertyNames[i]] === "object") {
+        //       //
+        //       // }
+        //       else {
+        //         this.notifyPath(path, this[arrName][index][propertyNames[i]]);
+        //       }
+        //     }
+        //   }
+        // }
       },
 
       /**
